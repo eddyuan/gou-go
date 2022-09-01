@@ -16,4 +16,11 @@ class User < ApplicationRecord
               minimum: 6
             },
             if: -> { new_record? || !password.nil? }
+
+  def json
+    {
+      **self.attributes.except("password_digest", "created_at", "updated_at"),
+      is_sitter: self.sitter != nil
+    }
+  end
 end

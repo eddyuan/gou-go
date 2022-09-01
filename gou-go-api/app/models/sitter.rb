@@ -10,4 +10,27 @@ class Sitter < ApplicationRecord
   # validates :postcode, presence: true
   # validates :walks_per_day, presence: true
   # validates :dog_weight, presence: true
+  def json
+    {
+      **self.attributes.except("password_digest", "created_at", "updated_at"),
+      rating:
+        self.reviews.count > 0 ? self.reviews.average(:rating).round(2).to_f : 0
+      # reviews: self.reviews
+    }
+  end
+
+  def json_with_reviews
+    {
+      **self.attributes.except("password_digest", "created_at", "updated_at"),
+      rating:
+        (
+          if self.reviews.count > 0
+            self.reviews.average(:rating).round(2).to_f
+          else
+            0
+          end
+        ),
+      reviews: self.reviews
+    }
+  end
 end

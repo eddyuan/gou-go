@@ -57,8 +57,7 @@ class Api::V1::UsersController < ApplicationController
       :email,
       :address,
       :password,
-      :password_confirmation,
-      :is_sitter
+      :password_confirmation
     )
   end
 end

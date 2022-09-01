@@ -15,4 +15,21 @@ class ApplicationController < ActionController::API
       render json: { errors: e.message }, status: :unauthorized
     end
   end
+
+  def client_user
+    authorize_user
+    if @current_user.is_sitter
+      render json: { errors: "You are a sitter!" }, status: :method_not_allowed
+    end
+  end
+
+  def sitter_user
+    authorize_user
+    if !@current_user.is_sitter
+      render json: {
+               errors: "You are not a sitter!"
+             },
+             status: :method_not_allowed
+    end
+  end
 end
