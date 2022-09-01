@@ -1,5 +1,6 @@
 class Api::V1::SittersController < ApplicationController
-  before_action :authorize_user, except: %i[index show]
+  before_action :authorize_user, only: %i[create update destroy]
+  before_action :find_sitter, only: %i[show destroy update]
 
   def index
     @sitters = Sitter.all
@@ -7,7 +8,8 @@ class Api::V1::SittersController < ApplicationController
   end
 
   def show
-    render json: @sitter, status: :ok
+    p @sitter.bookings
+    render json: { sitter: @sitter, reviews: @sitter.reviews }, status: :ok
   end
 
   def create
@@ -38,7 +40,10 @@ class Api::V1::SittersController < ApplicationController
   private
 
   def find_sitter
-    @sitter = Sitter.find_by_id!(params[:_id])
+    p params
+    p params[:id]
+    p params[:_id]
+    @sitter = Sitter.find_by(id: params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { errors: "Sitter not found" }, status: :not_found
   end

@@ -1,4 +1,5 @@
 class Pet < ApplicationRecord
   belongs_to :user
-  has_and_belongs_to_many :bookings
+  has_many :pet_bookings, dependent: :destroy
+  has_many :bookings, through: :pet_bookings
 end

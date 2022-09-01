@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       # resources :users, param: :_email
       post "/register", to: "users#create"
       get "/sitters", to: "sitters#index"
+      get "/sitter", to: "sitters#show"
       post "/login", to: "authentication#login"
       get "/*a", to: "application#not_found"
     end

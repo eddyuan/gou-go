@@ -12,7 +12,7 @@ rails g model sitter first_name:string last_name:string price:integer img_url:te
 rails g controller api/v1/sitters
 
 Pet
-rails g model pet name:string age:integer breed:string weight:float sex:integer user:references
+rails g model pet name:string age:integer breed:text weight:float sex:integer user:references
 
 rails g controller api/v1/pets
 
@@ -21,8 +21,17 @@ rails g model booking price:integer time:datetime duration:integer user:referenc
 
 rails g controller api/v1/bookings
 
+PetBooking Join Table
+rails g model pet_booking pet:references booking:references
+
 For has_and_belongs_to_many
 rails g migration CreatePetsBookings
+#edit the migration
+
+Review
+rails g model review rating:integer body:text user:references sitter:references
+
+rails g controller api/v1/review
 ```
 
 ```rb
