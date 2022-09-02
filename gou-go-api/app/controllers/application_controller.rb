@@ -10,25 +10,24 @@ class ApplicationController < ActionController::API
       @decoded = JsonWebToken.decode(header)
       @current_user = User.find(@decoded[:user_id])
     rescue ActiveRecord::RecordNotFound => e
-      render json: { errors: e.message }, status: :unauthorized
+      render json: Resp.error(e.message), status: :unauthorized
     rescue JWT::DecodeError => e
-      render json: { errors: e.message }, status: :unauthorized
+      render json: Resp.error(errors: e.message), status: :unauthorized
     end
   end
 
   def client_user
     authorize_user
     if @current_user.is_sitter
-      render json: { errors: "You are a sitter!" }, status: :method_not_allowed
+      render json: Resp.error(errors: "You are a sitter!"),
+             status: :method_not_allowed
     end
   end
 
   def sitter_user
     authorize_user
     if !@current_user.is_sitter
-      render json: {
-               errors: "You are not a sitter!"
-             },
+      render json: Resp.error("You are not a sitter!"),
              status: :method_not_allowed
     end
   end
