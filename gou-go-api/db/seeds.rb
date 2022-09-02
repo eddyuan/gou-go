@@ -48,7 +48,7 @@ core_user =
     name: Faker::Name.first_name,
     age: rand(1..10),
     breed: BREEDS.sample,
-    weight: rand(1.0..20.0),
+    weight: rand(1.0..20.0).round(2).to_f,
     sex: rand(1..2),
     user_id: core_user.id
   )
@@ -77,7 +77,7 @@ core_sitter =
     description: "123",
     postcode: Faker::Address.postcode,
     walks_per_day: rand(1..5),
-    dog_weight: rand(1.0..20.0),
+    dog_weight: rand(1.0..20.0).round(2).to_f,
     user_id: core_sitter_user.id
   )
 
@@ -127,7 +127,7 @@ end
         description: "123",
         postcode: Faker::Address.postcode,
         walks_per_day: rand(1..5),
-        dog_weight: rand(1.0..20.0),
+        dog_weight: rand(1.0..20.0).round(2).to_f,
         user_id: user.id
       )
   else
@@ -137,7 +137,7 @@ end
           name: Faker::Name.first_name,
           age: rand(1..10),
           breed: BREEDS.sample,
-          weight: rand(1.0..20.0),
+          weight: rand(1.0..20.0).round(2).to_f,
           sex: rand(1..2),
           user_id: user.id
         )

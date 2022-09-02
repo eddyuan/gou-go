@@ -15,7 +15,6 @@ class Sitter < ApplicationRecord
       **self.attributes.except("password_digest", "created_at", "updated_at"),
       rating:
         self.reviews.count > 0 ? self.reviews.average(:rating).round(2).to_f : 0
-      # reviews: self.reviews
     }
   end
 

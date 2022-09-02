@@ -1,16 +1,16 @@
 class Api::V1::UsersController < ApplicationController
   before_action :authorize_user, except: :create
-  before_action :find_user, only: %i[update show destroy]
+  # before_action :find_user, only: %i[update show destroy]
 
   # GET /users
   def index
     @users = User.all
-    render json: @users, status: :ok
+    render json: Resp.success(@users)
   end
 
   # GET /users/{username}
   def show
-    render json: @user, status: :ok
+    render json: Resp.success(@current_user)
   end
 
   # POST /users
@@ -28,26 +28,26 @@ class Api::V1::UsersController < ApplicationController
 
   # PUT /users/{username}
   def update
-    unless @user.update(user_params)
-      render json: {
-               errors: @user.errors.full_messages
-             },
+    if @current_user.update(user_params)
+      render json: Resp.success
+    else
+      render json: Resp.error(@user.errors.full_messages),
              status: :unprocessable_entity
     end
   end
 
   # DELETE /users/{username}
-  def destroy
-    @user.destroy
-  end
+  # def destroy
+  #   @user.destroy
+  # end
 
   private
 
-  def find_user
-    @user = User.find_by_email!(params[:_email])
-  rescue ActiveRecord::RecordNotFound
-    render json: { errors: "User not found" }, status: :not_found
-  end
+  # def find_user
+  #   @user = User.find_by_email!(params[:_email])
+  # rescue ActiveRecord::RecordNotFound
+  #   render json: Resp.error("User not found"), status: :unprocessable_entity
+  # end
 
   def user_params
     params.permit(

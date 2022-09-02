@@ -1,42 +1,31 @@
 class Api::V1::SittersController < ApplicationController
-  before_action :authorize_user, only: %i[create]
-  before_action :sitter_user, only: %i[update destroy]
+  before_action :authorize_user, only: %i[create edit]
+  before_action :sitter_user, only: %i[destroy]
   before_action :find_sitter, only: %i[show]
-  before_action :find_own_sitter, only: %i[destroy update]
 
   def index
     @sitters = Sitter.all
-    render json: @sitters.map { |sitter| sitter.json }, status: :ok
+    render json: Resp.success(@sitters.map { |sitter| sitter.json })
   end
 
   def show
-    render json: @sitter.json, status: :ok
+    render json: Resp.success(@sitter.json)
   end
 
-  def create
-    @sitter = Sitter.new(sitter_create_params)
-    @sitter.user_id = current_user.id
+  def edit
+    @sitter = @current_user.sitter || Sitter.new(sitter_params)
+    @sitter.assign_attributes(sitter_params)
     if @sitter.save
-      render json: @sitter, status: :created
+      render json: Resp.success(@sitter)
     else
-      render json: {
-               errors: @sitter.errors.full_messages
-             },
-             status: :unprocessable_entity
-    end
-  end
-
-  def update
-    unless @own_sitter.update(sitter_edit_params)
-      render json: {
-               errors: @sitter.errors.full_messages
-             },
+      render json: Resp.error(@sitter.errors.full_messages),
              status: :unprocessable_entity
     end
   end
 
   def destroy
-    @sitter.destroy
+    @current_user.sitter?.destroy
+    render json: Resp.success
   end
 
   private
@@ -47,26 +36,7 @@ class Api::V1::SittersController < ApplicationController
     render json: { errors: "Sitter not found" }, status: :not_found
   end
 
-  def find_own_sitter
-    @own_sitter = Sitter.find_by!(id: current_user.id)
-  rescue ActiveRecord::RecordNotFound
-    render json: { errors: "You are not a sitter" }, status: :not_found
-  end
-
-  def sitter_create_params
-    params.permit(
-      :img_url,
-      :first_name,
-      :last_name,
-      :price,
-      :description,
-      :postcode,
-      :walks_per_day,
-      :dog_weight
-    )
-  end
-
-  def sitter_edit_params
+  def sitter_params
     params.permit(
       :img_url,
       :first_name,

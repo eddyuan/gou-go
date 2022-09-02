@@ -20,7 +20,11 @@ class User < ApplicationRecord
   def json
     {
       **self.attributes.except("password_digest", "created_at", "updated_at"),
-      is_sitter: self.sitter != nil
+      is_sitter: self.is_sitter
     }
+  end
+
+  def is_sitter
+    self.sitter != nil
   end
 end

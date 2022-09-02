@@ -4,9 +4,9 @@ class Api::V1::AuthenticationController < ApplicationController
   def login
     @user = User.find_by_email(params[:email])
     if @user&.authenticate(params[:password])
-      render json: JsonWebToken.userJson(@user), status: :ok
+      render json: Resp.success(JsonWebToken.userJson(@user))
     else
-      render json: { error: "unauthorized" }, status: :unauthorized
+      render json: Resp.error("unauthorized"), status: :unauthorized
     end
   end
 
