@@ -9,7 +9,7 @@ class Api::V1::SittersController < ApplicationController
   end
 
   def show
-    render json: Resp.success(@sitter.json)
+    render json: Resp.success(@sitter.json_with_reviews)
   end
 
   def edit
