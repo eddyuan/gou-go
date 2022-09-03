@@ -4,9 +4,12 @@ import { Button, Form } from "@douyinfe/semi-ui";
 import { IconMailStroked, IconKeyStroked } from "@douyinfe/semi-icons";
 // reactstrap components
 import { Card, CardBody, Container, Row, Col } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import server from "server";
 
 const LoginPage = (props) => {
+  const navigate = useNavigate();
+
   const [state, dispatch] = useContext(Context);
 
   const [loading, setLoading] = useState(false);
@@ -20,6 +23,7 @@ const LoginPage = (props) => {
         console.log(res);
         if (res.data.success) {
           dispatch({ type: "SET_USER", payload: res.data.data });
+          navigate("/");
         }
       })
       .catch((e) => {

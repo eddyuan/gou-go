@@ -12,7 +12,9 @@ export const Store = ({ children }) => {
     switch (action.type) {
       case "SET_USER":
         return { ...state, user: action.payload };
-
+      case "SIGNOUT":
+        localStorage.removeItem("user_jwt");
+        return { ...state, user: {} };
       default:
         return state;
     }

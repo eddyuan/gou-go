@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Context } from "Store";
 import { Link } from "react-router-dom";
 
@@ -28,6 +29,7 @@ import {
 } from "reactstrap";
 
 const GougoNavbar = (props) => {
+  const navigate = useNavigate();
   useEffect(() => {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise
@@ -46,41 +48,11 @@ const GougoNavbar = (props) => {
     setCollapseClasses("");
   };
 
-  // const UserSection = () => () => {
-  //   if (state.user && state.user.id) {
-  //     return (
-  //       <Dropdown
-  //         trigger={"click"}
-  //         position={"bottomLeft"}
-  //         render={
-  //           <Dropdown.Menu>
-  //             <Dropdown.Item>Menu Item 1</Dropdown.Item>
-  //             <Dropdown.Item>Menu Item 2</Dropdown.Item>
-  //             <Dropdown.Item>Menu Item 3</Dropdown.Item>
-  //           </Dropdown.Menu>
-  //         }
-  //       >
-  //         <Button>Click me</Button>
-  //       </Dropdown>
-  //     );
-  //   }
-  //   return (
-  //     <NavItem className="d-none d-lg-block ml-lg-4">
-  //       <Link to={"register"}>
-  //         <Button size="large" theme="solid">
-  //           Register
-  //         </Button>
-  //       </Link>
-  //       <Link to={"signin"} className="ml-2">
-  //         <Button style={{ color: "white" }} size="large">
-  //           Sign In
-  //         </Button>
-  //       </Link>
-  //     </NavItem>
-  //   );
-  // };
+  const onSignOut = () => {
+    dispatch({ type: "SIGNOUT", payload: {} });
+    navigate("/");
+  };
 
-  // render() {
   return (
     <>
       <header className="header-global">
@@ -288,7 +260,9 @@ const GougoNavbar = (props) => {
                           Bookings
                         </Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item>Sign Out</Dropdown.Item>
+                        <Dropdown.Item onClick={onSignOut}>
+                          Sign Out
+                        </Dropdown.Item>
                       </Dropdown.Menu>
                     }
                   >
