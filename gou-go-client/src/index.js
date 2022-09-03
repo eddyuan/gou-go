@@ -77,9 +77,7 @@ root.render(
             </Routes>
           </Wrapper>
         </Content>
-        <Footer>
-          <GougoFooter />
-        </Footer>
+        <Footer>{/* <GougoFooter /> */}</Footer>
       </BrowserRouter>
     </LocaleProvider>
   </Store>

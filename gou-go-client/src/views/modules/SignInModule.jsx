@@ -10,22 +10,12 @@ import { IconMailStroked, IconKeyStroked } from '@douyinfe/semi-icons';
 const SignInModule = (props) => {
   const [state, dispatch] = useContext(Context);
 
-  //   const [loginV, setLoginV] = useState(false);
-
   const [loginLoading, setLoginLoading] = useState(false);
   const [mode, setMode] = useState(props.mode || 1);
 
   const onModeChange = (e) => {
     setMode(e.target.value);
   };
-
-  //   const handleSubmit = (value) => {
-  //     if (mode === 1) {
-  //       handleLogin(value);
-  //     } else {
-  //       console.log(value);
-  //     }
-  //   };
 
   const handleSubmit = async (values) => {
     setLoginLoading(true);
@@ -46,7 +36,6 @@ const SignInModule = (props) => {
         props.onSuccess(_mode);
       }
     } catch (e) {
-      console.log(e);
       if (e.response && e.response.status === 401) {
         Toast.error({
           content: 'Incorrect credential',
@@ -60,31 +49,8 @@ const SignInModule = (props) => {
       }
     }
     setLoginLoading(false);
-    //   .then((res) => {
-    //     console.log(res);
-    //     if (res.data.success) {
-    //       dispatch({ type: 'SET_USER', payload: res.data.data });
-    //       // navigate(-1);
-    //       props.onSuccess();
-    //       Toast.success({
-    //         content: 'Signed in',
-    //         duration: 5,
-    //       });
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     if (e.response && e.response.status === 401) {
-    //       Toast.error({
-    //         content: 'Incorrect credential',
-    //         duration: 3,
-    //       });
-    //     }
-    //   })
-    //   .then(() => {
-    //     setLoginLoading(false);
-    //   });
   };
+
   return (
     <div>
       <Form onSubmit={handleSubmit}>
@@ -173,32 +139,14 @@ const SignInModule = (props) => {
             ></Form.Input>
           </>
         )}
-        {/* {mode === 2 && (
-          <Form.Input
-            label='Confirm Password'
-            field='confirm_password'
-            mode='password'
-            size='large'
-            prefix={<IconKeyStroked />}
-            showClear
-            disabled={loginLoading}
-            rules={[
-              { required: true, message: 'Required' },
-              { type: 'string', message: 'Invalid Password' },
-              {
-                validator: (rule, value) => String(value).length >= 6,
-                message: 'Invalid Password',
-              },
-            ]}
-          ></Form.Input>
-        )} */}
+
         <div className='d-flex aic lh-1'>
           <Form.Switch
             field='save'
             noLabel={true}
             initValue={true}
           ></Form.Switch>
-          <span className='ml-2'>Remember</span>
+          <span className='ml-2'>Remember Me</span>
         </div>
         <div className='text-center mt-4'>
           <Button
@@ -210,19 +158,6 @@ const SignInModule = (props) => {
             {mode === 1 ? 'Sign In' : 'Sign up'}
           </Button>
         </div>
-        {/* <div className='text-center mt-4'>
-          <Link to='/register'>
-            <Button
-              size='large'
-              theme='borderless'
-              htmlType='submit'
-              loading={loginLoading}
-              style={{ color: 'var(--semi-color-text-2' }}
-            >
-              Register
-            </Button>
-          </Link>
-        </div> */}
       </Form>
     </div>
   );
