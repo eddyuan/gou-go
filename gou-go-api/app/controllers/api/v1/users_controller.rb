@@ -17,11 +17,9 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render json: JsonWebToken.userJson(@user), status: :created
+      render json: Resp.success(JsonWebToken.userJson(@user)), status: :created
     else
-      render json: {
-               errors: @user.errors.full_messages
-             },
+      render json: Resp.error(@user.errors.full_messages),
              status: :unprocessable_entity
     end
   end

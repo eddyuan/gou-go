@@ -19,7 +19,8 @@ class JsonWebToken
       token: token,
       exp: time.strftime("%m-%d-%Y %H:%M"),
       **user.json,
-      bookings: bookings
+      bookings: bookings,
+      pets: user.pets
     }
   end
 end

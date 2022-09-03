@@ -1,11 +1,13 @@
-import React, { useState, useContext } from "react";
-import { Context } from "Store";
-import { Button, Form } from "@douyinfe/semi-ui";
-import { IconMailStroked, IconKeyStroked } from "@douyinfe/semi-icons";
+import React, { useState, useContext } from 'react';
+import { Context } from 'Store';
+import { Button, Form, Card, Toast } from '@douyinfe/semi-ui';
+import { IconMailStroked, IconKeyStroked } from '@douyinfe/semi-icons';
 // reactstrap components
-import { Card, CardBody, Container, Row, Col } from "reactstrap";
-import { useNavigate } from "react-router-dom";
-import server from "server";
+// import { CardBody, Container, Row, Col } from 'reactstrap';
+import { useNavigate, Link } from 'react-router-dom';
+import server from 'server';
+
+import background from 'assets/img/dog1.jpg';
 
 const LoginPage = (props) => {
   const navigate = useNavigate();
@@ -18,16 +20,30 @@ const LoginPage = (props) => {
     console.log(values);
     setLoading(true);
     server
-      .login({ email: values.email, password: values.password })
+      .login({
+        email: values.email,
+        password: values.password,
+        save: values.save,
+      })
       .then((res) => {
         console.log(res);
         if (res.data.success) {
-          dispatch({ type: "SET_USER", payload: res.data.data });
-          navigate("/");
+          dispatch({ type: 'SET_USER', payload: res.data.data });
+          navigate(-1);
+          Toast.success({
+            content: 'Signed in',
+            duration: 5,
+          });
         }
       })
       .catch((e) => {
         console.log(e);
+        if (e.response && e.response.status === 401) {
+          Toast.error({
+            content: 'Incorrect credential',
+            duration: 3,
+          });
+        }
       })
       .then(() => {
         setLoading(false);
@@ -35,86 +51,113 @@ const LoginPage = (props) => {
   };
 
   return (
-    <>
+    <div
+      className='login-page'
+      style={{
+        backgroundImage: `url(${background})`,
+      }}
+    >
       <main>
-        <section className="section section-shaped section-lg section-fullscreen">
-          <div className="shape shape-style-1 bg-gradient-default">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
+        <section className='section-fullscreen'>
+          <div className='login-container'>
+            <Card className='login-card glass-light'>
+              <Form onSubmit={(values) => handleSubmit(values)}>
+                <div className='text-center mb-2 mt-3'>
+                  <img
+                    alt='...'
+                    height={42}
+                    src={require('assets/img/brand/gougo-logo.png')}
+                  />
+                </div>
+                <Form.Input
+                  label='E-mail'
+                  field='email'
+                  size='large'
+                  prefix={<IconMailStroked />}
+                  showClear
+                  disabled={loading}
+                  rules={[
+                    { required: true, message: 'Required' },
+                    { type: 'string', message: 'Invalid E-mail' },
+                    {
+                      validator: (rule, value) => {
+                        var re = /\S+@\S+\.\S+/;
+                        return re.test(value);
+                      },
+                      message: 'Invalid E-mail',
+                    },
+                  ]}
+                ></Form.Input>
+                <Form.Input
+                  label='Password'
+                  field='password'
+                  mode='password'
+                  size='large'
+                  prefix={<IconKeyStroked />}
+                  showClear
+                  disabled={loading}
+                  rules={[
+                    { required: true, message: 'Required' },
+                    { type: 'string', message: 'Invalid Password' },
+                    {
+                      validator: (rule, value) => value.length >= 6,
+                      message: 'Invalid Password',
+                    },
+                  ]}
+                ></Form.Input>
+                <div className='d-flex aic lh-1'>
+                  <Form.Switch
+                    field='save'
+                    noLabel={true}
+                    initValue={true}
+                  ></Form.Switch>
+                  <span className='ml-2'>Remember</span>
+                </div>
+                <div className='text-center mt-4'>
+                  <Button
+                    size='large'
+                    theme='solid'
+                    htmlType='submit'
+                    loading={loading}
+                  >
+                    Sign in
+                  </Button>
+                </div>
+                <div className='text-center mt-4'>
+                  <Link to='/register'>
+                    <Button
+                      size='large'
+                      theme='borderless'
+                      htmlType='submit'
+                      loading={loading}
+                      style={{ color: 'var(--semi-color-text-2' }}
+                    >
+                      Register
+                    </Button>
+                  </Link>
+                </div>
+              </Form>
+            </Card>
+
+            {/* <a
+              className='text-light'
+              href='#pablo'
+              onClick={(e) => e.preventDefault()}
+            >
+              <small>Forgot password?</small>
+            </a>
+
+            <a
+              className='text-light'
+              href='#pablo'
+              onClick={(e) => e.preventDefault()}
+            >
+              <small>Create new account</small>
+            </a> */}
           </div>
-          <Container className="pt-lg-7">
-            <Row className="justify-content-center">
-              <Col lg="5">
-                <Card className="bg-secondary shadow border-0">
-                  <CardBody className="px-lg-5 py-lg-5">
-                    <Form onSubmit={(values) => handleSubmit(values)}>
-                      <h3 className="text-center">Sign in</h3>
-                      <Form.Input
-                        label="E-mail"
-                        field="email"
-                        size="large"
-                        prefix={<IconMailStroked />}
-                        showClear
-                        disabled={loading}
-                      ></Form.Input>
-                      <Form.Input
-                        label="Password"
-                        field="password"
-                        mode="password"
-                        size="large"
-                        prefix={<IconKeyStroked />}
-                        showClear
-                        disabled={loading}
-                      ></Form.Input>
-                      <div className="text-center">
-                        <Button
-                          className="mt-4"
-                          size="large"
-                          theme="solid"
-                          htmlType="submit"
-                          loading={loading}
-                        >
-                          Sign in
-                        </Button>
-                        {/* <Button className="my-4" color="primary" type="button">
-                          Sign in
-                        </Button> */}
-                      </div>
-                    </Form>
-                  </CardBody>
-                </Card>
-                <Row className="mt-3">
-                  <Col xs="6">
-                    <a
-                      className="text-light"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <small>Forgot password?</small>
-                    </a>
-                  </Col>
-                  <Col className="text-right" xs="6">
-                    <a
-                      className="text-light"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <small>Create new account</small>
-                    </a>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Container>
         </section>
       </main>
-    </>
+    </div>
   );
 };
 

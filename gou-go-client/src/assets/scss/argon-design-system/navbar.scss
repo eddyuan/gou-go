@@ -62,12 +62,12 @@
     .nav-item {
       margin-right: 0.5rem;
 
-      [data-toggle="dropdown"]::after {
+      [data-toggle='dropdown']::after {
         transition: $transition-base;
       }
 
       &.show {
-        [data-toggle="dropdown"]::after {
+        [data-toggle='dropdown']::after {
           transform: rotate(180deg);
         }
       }
@@ -102,7 +102,7 @@
       &:before {
         background: $dropdown-bg;
         box-shadow: none;
-        content: "";
+        content: '';
         display: block;
         height: 16px;
         width: 16px;
@@ -190,8 +190,8 @@
   top: 0;
   width: 100%;
   z-index: 100;
-  background-color: rgba($color: #172b4d, $alpha: 0.5) !important;
-  backdrop-filter: blur(20px);
+  background-color: rgba($color: #172b4d, $alpha: 0.4) !important;
+  backdrop-filter: saturate(180%) blur(20px);
   //   background-color: transparent !important;
   border: 0;
   box-shadow: none;
@@ -258,7 +258,7 @@
   .navbar-nav {
     .nav-link {
       padding: 0.625rem 0;
-      color: theme-color("default") !important;
+      color: theme-color('default') !important;
     }
 
     .dropdown-menu {
@@ -335,8 +335,7 @@
     padding: 1.5rem;
     border-radius: $border-radius;
     background: #fff;
-    box-shadow: 0 50px 100px rgba(50, 50, 93, 0.1),
-      0 15px 35px rgba(50, 50, 93, 0.15), 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 50px 100px rgba(50, 50, 93, 0.1), 0 15px 35px rgba(50, 50, 93, 0.15), 0 5px 15px rgba(0, 0, 0, 0.1);
     animation: show-navbar-collapse 0.2s ease forwards;
   }
 
