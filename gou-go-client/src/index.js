@@ -15,37 +15,59 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useLayoutEffect } from "react";
+import ReactDOM from "react-dom/client";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 
-import 'assets/vendor/nucleo/css/nucleo.css';
-import 'assets/vendor/font-awesome/css/font-awesome.min.css';
-import 'assets/scss/argon-design-system-react.scss?v1.1.0';
-import 'assets/scss/app.scss';
+import "assets/vendor/nucleo/css/nucleo.css";
+import "assets/vendor/font-awesome/css/font-awesome.min.css";
+import "assets/scss/argon-design-system-react.scss?v1.1.0";
+import "assets/scss/app.scss";
+import { Store } from "Store";
 
-import GougoNavbar from 'components/Navbars/GougoNavbar.js';
-import GougoFooter from 'components/Footers/GougoFooter.js';
-import HomePage from 'views/HomePage.js';
-import Landing from 'views/examples/Landing.js';
-import Login from 'views/examples/Login.js';
-import Profile from 'views/examples/Profile.js';
-import Register from 'views/examples/Register.js';
+import GougoNavbar from "components/Navbars/GougoNavbar";
+import GougoFooter from "components/Footers/GougoFooter";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// Pages
+import HomePage from "views/HomePage";
+import SitterPage from "views/SitterPage";
+import LoginPage from "views/LoginPage";
+import Landing from "views/examples/Landing.js";
+// import Login from "views/examples/Login.js";
+import Profile from "views/examples/Profile.js";
+import Register from "views/examples/Register.js";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const Wrapper = ({ children }) => {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
+  return children;
+};
 
 root.render(
-  <>
+  <Store>
     <BrowserRouter>
       <GougoNavbar />
-      <Routes>
-        <Route path='/' exact element={<HomePage />} />
-        <Route path='/landing-page' exact element={<Landing />} />
-        <Route path='/login-page' exact element={<Login />} />
-        <Route path='/profile-page' exact element={<Profile />} />
-        <Route path='/register-page' exact element={<Register />} />
-      </Routes>
+      <Wrapper>
+        <Routes>
+          <Route path="/" exact element={<HomePage />} />
+          <Route path="/sitter" element={<SitterPage />} />
+          <Route path="/landing-page" exact element={<Landing />} />
+          <Route path="/signin" exact element={<LoginPage />} />
+          <Route path="/profile-page" exact element={<Profile />} />
+          <Route path="/register-page" exact element={<Register />} />
+        </Routes>
+      </Wrapper>
       <GougoFooter />
     </BrowserRouter>
-  </>
+  </Store>
 );

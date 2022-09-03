@@ -29,7 +29,7 @@ class Sitter < ApplicationRecord
             0
           end
         ),
-      reviews: self.reviews
+      reviews: self.reviews.map { |review| review.json }
     }
   end
 end

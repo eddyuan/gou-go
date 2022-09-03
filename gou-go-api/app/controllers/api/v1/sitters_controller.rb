@@ -5,7 +5,8 @@ class Api::V1::SittersController < ApplicationController
 
   def index
     @sitters = Sitter.all
-    render json: Resp.success(@sitters.map { |sitter| sitter.json })
+    render json:
+             Resp.success(@sitters.map { |sitter| sitter.json_with_reviews })
   end
 
   def show

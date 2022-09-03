@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /users/{username}
   def show
-    render json: Resp.success(@current_user)
+    render json: Resp.success(JsonWebToken.userJson(@current_user))
   end
 
   # POST /users

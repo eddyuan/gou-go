@@ -6,7 +6,7 @@ class Api::V1::AuthenticationController < ApplicationController
     if @user&.authenticate(params[:password])
       render json: Resp.success(JsonWebToken.userJson(@user))
     else
-      render json: Resp.error("unauthorized"), status: :unauthorized
+      render json: Resp.error("Invalid credential"), status: :unauthorized
     end
   end
 

@@ -9,20 +9,27 @@ Rails.application.routes.draw do
       post "/register", to: "users#create"
       post "/login", to: "authentication#login"
 
+      get "/user", to: "users#show"
+
       get "/sitters", to: "sitters#index"
       get "/sitter", to: "sitters#show"
       post "/sitter/delete", to: "sitter#destroy"
-      post "/sitter/edit", to: "sitter#edit"
+      post "/sitter/save", to: "sitter#edit"
 
       get "/bookings", to: "bookings#index"
       get "/booking", to: "bookings#show"
-      post "/booking/create", to: "bookings#create"
+      post "/booking/save", to: "bookings#create"
       post "/booking/delete", to: "bookings#destroy"
 
       get "/pets", to: "pets#index"
       get "/pet", to: "pets#show"
-      post "/pet/edit", to: "pets#edit"
+      post "/pet/save", to: "pets#edit"
       post "/pet/delete", to: "pets#destroy"
+
+      get "/reviews", to: "reviews#index"
+      get "/review", to: "reviews#show"
+      post "/review/save", to: "reviews#edit"
+      post "/review/delete", to: "reviews#destroy"
 
       get "/*a", to: "application#not_found"
     end
