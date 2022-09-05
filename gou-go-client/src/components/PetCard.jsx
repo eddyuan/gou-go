@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Context } from 'Store';
 import { Button, Card, Tag, Modal, Toast } from '@douyinfe/semi-ui';
 import { IconDeleteStroked, IconMale, IconFemale } from '@douyinfe/semi-icons';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import server from 'server';
 
 const PetCard = (props) => {
@@ -45,7 +45,7 @@ const PetCard = (props) => {
 
   const toDetail = () => {
     if (!loading) {
-      navigate(`/pet/${pet.id}`);
+      navigate(`/pet/${pet.id}`, { state: { pet: pet } });
     }
   };
 
@@ -72,14 +72,16 @@ const PetCard = (props) => {
                 <Tag>{pet.weight} lb</Tag>
               </div>
             </div>
-            <Button
-              size='small'
-              theme='borderless'
-              type='danger'
-              icon={<IconDeleteStroked />}
-              onClick={onDelete}
-              loading={loading}
-            ></Button>
+            {props.showDelete !== false && (
+              <Button
+                size='small'
+                theme='borderless'
+                type='danger'
+                icon={<IconDeleteStroked />}
+                onClick={onDelete}
+                loading={loading}
+              ></Button>
+            )}
           </div>
         </Card>
       </div>

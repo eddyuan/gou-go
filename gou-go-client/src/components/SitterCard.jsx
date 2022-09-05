@@ -1,19 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// reactstrap components
 
-// import { Badge } from 'reactstrap';
-
-import {
-  Button,
-  Toast,
-  Form,
-  Card,
-  Rating,
-  Skeleton,
-  Space,
-  Tag,
-} from '@douyinfe/semi-ui';
+import { Card, Rating, Skeleton, Space, Tag } from '@douyinfe/semi-ui';
 
 const SitterCard = (props) => {
   if (props.loading || !props.sitter) {

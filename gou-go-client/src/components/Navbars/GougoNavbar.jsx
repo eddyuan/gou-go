@@ -1,14 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Context } from 'Store';
 
-import { IconUserCircleStroked, IconServerStroked } from '@douyinfe/semi-icons';
+import {
+  IconUserCircleStroked,
+  IconGridStroked,
+  IconExit,
+} from '@douyinfe/semi-icons';
 import { Nav, Button, Dropdown, Toast } from '@douyinfe/semi-ui';
 
 const GougoNavbar = (props) => {
-  // const navigate = useNavigate();
-  // useEffect(() => {}, []);
-
   const [state, dispatch] = useContext(Context);
 
   const onSignOut = () => {
@@ -43,13 +44,15 @@ const GougoNavbar = (props) => {
                   render={
                     <Dropdown.Menu>
                       <Link to={`/profile`}>
-                        <Dropdown.Item>Profile</Dropdown.Item>
+                        <Dropdown.Item icon={<IconGridStroked />}>
+                          Dashboard
+                        </Dropdown.Item>
                       </Link>
-                      <Dropdown.Item icon={<IconServerStroked />}>
+                      {/* <Dropdown.Item icon={<IconServerStroked />}>
                         Bookings
-                      </Dropdown.Item>
+                      </Dropdown.Item> */}
                       <Dropdown.Divider />
-                      <Dropdown.Item onClick={onSignOut}>
+                      <Dropdown.Item onClick={onSignOut} icon={<IconExit />}>
                         Sign Out
                       </Dropdown.Item>
                     </Dropdown.Menu>

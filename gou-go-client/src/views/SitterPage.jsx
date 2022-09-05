@@ -26,7 +26,7 @@ const SitterPage = (props) => {
   const location = useLocation();
   const [state, dispatch] = useContext(Context);
   const [sitter, setSitter] = useState(location.state?.sitter || {});
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [bookVisible, setBookVisible] = useState(false);
   const [bookLoading, setBookLoading] = useState(false);
   const [bookPrice, setBookPrice] = useState(0);
@@ -42,12 +42,6 @@ const SitterPage = (props) => {
     );
     _badPets = state.user.pets.filter((pet) => pet.weight > sitter.dog_weight);
   }
-
-  useEffect(() => {
-    if (!sitter?.id) {
-      getSitter();
-    }
-  }, []);
 
   const calcBookPrice = (formVal) => {
     console.log(formVal);
@@ -74,6 +68,7 @@ const SitterPage = (props) => {
   };
 
   const getSitter = () => {
+    console.log('getSitters');
     if (id) {
       server
         .getSitter(id)
@@ -116,7 +111,9 @@ const SitterPage = (props) => {
       .bookSave({ ...value, sitter_id: sitter.id })
       .then((res) => {
         if (res.data?.success) {
-          navigate('/profile');
+          navigate(`/booking/${res.data.data.id}`, {
+            state: { booking: res.data.data },
+          });
           Toast.success({ content: 'Booking created successfully!' });
         }
         server
@@ -136,6 +133,11 @@ const SitterPage = (props) => {
         setBookLoading(false);
       });
   };
+
+  useEffect(() => {
+    getSitter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className='sitter-page padded'>
@@ -165,7 +167,7 @@ const SitterPage = (props) => {
                     allowHalf
                     defaultValue={sitter.rating}
                   />
-                  <span className='ms-3 mb-1'>{sitter.rating.toFixed(1)}</span>
+                  <span className='ms-3 mb-1'>{sitter.rating?.toFixed(1)}</span>
                 </div>
                 <div className='mt-3 mb-4'>
                   <span className='bg-lighter rounded p-2'>
@@ -202,123 +204,121 @@ const SitterPage = (props) => {
                   visible={bookVisible && !!state.user?.id}
                   onCancel={toggleBookVisible}
                 >
-                  {!!state.user?.pets?.length && (
-                    <Form onValueChange={calcBookPrice} onSubmit={onBookSubmit}>
-                      <Form.CheckboxGroup
-                        field='pets'
-                        label='Select Pets'
-                        disabled={bookLoading}
-                        rules={[{ required: true, message: 'Required' }]}
-                      >
-                        {_goodPets.map((pet) => {
-                          return (
-                            <Form.Checkbox
-                              value={pet.id}
-                              key={pet.id}
-                              // style={{ marginBottom: '6px' }}
-                            >
-                              {pet.name}
-                              <Tag className='mx-2'>{pet.weight}lb</Tag>
-                            </Form.Checkbox>
-                          );
-                        })}
-                        {_badPets.map((pet) => {
-                          return (
-                            <Form.Checkbox
-                              disabled={true}
-                              value={pet.id}
-                              key={pet.id}
-                              // style={{ marginBottom: '6px' }}
-                            >
-                              {pet.name}
-                              <Tag className='mx-2'>{pet.weight}lb</Tag> Over
-                              Size
-                            </Form.Checkbox>
-                          );
-                        })}
-                      </Form.CheckboxGroup>
-                      {_goodPets.length > 0 ? (
-                        <>
-                          <div>
-                            <Form.DatePicker
-                              field='time'
-                              label='Choose A Time'
-                              type='dateTime'
-                              format='yyyy-MM-dd HH:mm'
-                              disabledDate={disabledDate}
-                              disabledTime={disabledTime}
-                              hideDisabledOptions={true}
-                              timePickerOpts={{
-                                scrollItemProps: { cycled: false },
-                              }}
-                              disabled={bookLoading}
-                              rules={[{ required: true, message: 'Required' }]}
-                            ></Form.DatePicker>
-                          </div>
-                          <div>
-                            <Form.Select
-                              field='duration'
-                              label='Duration'
-                              disabled={bookLoading}
-                              rules={[{ required: true, message: 'Required' }]}
-                            >
-                              <Form.Select.Option value={60}>
-                                1 Hour
-                              </Form.Select.Option>
-                              <Form.Select.Option value={90}>
-                                1.5 Hours
-                              </Form.Select.Option>
-                              <Form.Select.Option value={120}>
-                                2 Hours
-                              </Form.Select.Option>
-                              <Form.Select.Option value={150}>
-                                2.5 Hours
-                              </Form.Select.Option>
-                              <Form.Select.Option value={180}>
-                                3 Hours
-                              </Form.Select.Option>
-                            </Form.Select>
-                          </div>
-                          <hr className='mt-4 mb-6' />
-                          <div className='d-flex aic'>
-                            <Button
-                              size='large'
-                              htmlType='submit'
-                              loading={bookLoading}
-                              theme='solid'
-                              disabled={!bookPrice}
-                            >
-                              Book Now
-                            </Button>
-                            <span className='booking-price ml-2 lh-1'>
-                              ${(bookPrice / 100).toFixed(2)}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className='mb-4'>
-                            You don't have a eligible pet
-                          </div>
+                  {/* {!!state.user?.pets?.length && ( */}
+                  <Form onValueChange={calcBookPrice} onSubmit={onBookSubmit}>
+                    <Form.CheckboxGroup
+                      field='pets'
+                      label='Select Pets'
+                      disabled={bookLoading}
+                      rules={[{ required: true, message: 'Required' }]}
+                    >
+                      {_goodPets.map((pet) => {
+                        return (
+                          <Form.Checkbox
+                            value={pet.id}
+                            key={pet.id}
+                            // style={{ marginBottom: '6px' }}
+                          >
+                            {pet.name}
+                            <Tag className='mx-2'>{pet.weight}lb</Tag>
+                          </Form.Checkbox>
+                        );
+                      })}
+                      {_badPets.map((pet) => {
+                        return (
+                          <Form.Checkbox
+                            disabled={true}
+                            value={pet.id}
+                            key={pet.id}
+                            // style={{ marginBottom: '6px' }}
+                          >
+                            {pet.name}
+                            <Tag className='mx-2'>{pet.weight}lb</Tag> Over Size
+                          </Form.Checkbox>
+                        );
+                      })}
+                    </Form.CheckboxGroup>
+                    {_goodPets.length > 0 ? (
+                      <>
+                        <div>
+                          <Form.DatePicker
+                            field='time'
+                            label='Choose A Time'
+                            type='dateTime'
+                            format='yyyy-MM-dd HH:mm'
+                            disabledDate={disabledDate}
+                            disabledTime={disabledTime}
+                            hideDisabledOptions={true}
+                            timePickerOpts={{
+                              scrollItemProps: { cycled: false },
+                            }}
+                            disabled={bookLoading}
+                            rules={[{ required: true, message: 'Required' }]}
+                          ></Form.DatePicker>
+                        </div>
+                        <div>
+                          <Form.Select
+                            field='duration'
+                            label='Duration'
+                            disabled={bookLoading}
+                            rules={[{ required: true, message: 'Required' }]}
+                          >
+                            <Form.Select.Option value={60}>
+                              1 Hour
+                            </Form.Select.Option>
+                            <Form.Select.Option value={90}>
+                              1.5 Hours
+                            </Form.Select.Option>
+                            <Form.Select.Option value={120}>
+                              2 Hours
+                            </Form.Select.Option>
+                            <Form.Select.Option value={150}>
+                              2.5 Hours
+                            </Form.Select.Option>
+                            <Form.Select.Option value={180}>
+                              3 Hours
+                            </Form.Select.Option>
+                          </Form.Select>
+                        </div>
+                        <hr className='mt-4 mb-6' />
+                        <div className='d-flex aic'>
                           <Button
                             size='large'
-                            onClick={() => dispatch({ type: 'SHOW_PET' })}
-                            block={true}
+                            htmlType='submit'
+                            loading={bookLoading}
+                            theme='solid'
+                            disabled={!bookPrice}
                           >
-                            Add pet
+                            Book Now
                           </Button>
-                        </>
-                      )}
-                    </Form>
-                  )}
+                          <span className='booking-price ml-2 lh-1'>
+                            ${(bookPrice / 100).toFixed(2)}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className='mb-4'>
+                          You don't have a eligible pet
+                        </div>
+                        <Button
+                          size='large'
+                          onClick={() => dispatch({ type: 'SHOW_PET' })}
+                          block={true}
+                        >
+                          Add pet
+                        </Button>
+                      </>
+                    )}
+                  </Form>
                 </SideSheet>
 
                 <hr />
                 <h4 className='mt-3'>
-                  Reviews ({sitter.reviews ? sitter.reviews.length : 0})
+                  Reviews ({sitter.reviews?.length || 0})
                 </h4>
                 <div>
-                  {sitter.reviews.map((review) => {
+                  {sitter.reviews?.map((review) => {
                     return (
                       <ReviewCard
                         review={review}

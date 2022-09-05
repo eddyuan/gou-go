@@ -10,7 +10,7 @@ class Booking < ApplicationRecord
     {
       **self.attributes,
       pets: self.pets.to_set,
-      sitter: self.sitter,
+      sitter: self.sitter.json_with_reviews,
       price: (self.sitter.price * self.duration * self.pets.count / 60).round()
     }
   end

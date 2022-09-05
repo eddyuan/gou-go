@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       post "/login", to: "authentication#login"
 
       get "/user", to: "users#show"
+      post "/user/update", to: "users#update"
 
       get "/sitters", to: "sitters#index"
       get "/sitter", to: "sitters#show"

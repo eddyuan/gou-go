@@ -26,13 +26,22 @@ class Api::V1::UsersController < ApplicationController
 
   # PUT /users/{username}
   def update
-    if @current_user.update(user_params)
-      render json: Resp.success
+    if @current_user.update(user_edit_params)
+      render json: Resp.success(JsonWebToken.userJson(@current_user))
     else
       render json: Resp.error(@user.errors.full_messages),
              status: :unprocessable_entity
     end
   end
+
+  # def update_password
+  #   if @current_user.update(user_edit_params)
+  #     render json: Resp.success
+  #   else
+  #     render json: Resp.error(@user.errors.full_messages),
+  #            status: :unprocessable_entity
+  #   end
+  # end
 
   # DELETE /users/{username}
   # def destroy
@@ -57,5 +66,8 @@ class Api::V1::UsersController < ApplicationController
       :password,
       :password_confirmation
     )
+  end
+  def user_edit_params
+    params.permit(:profile_img_url, :first_name, :last_name, :address)
   end
 end

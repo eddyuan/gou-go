@@ -14,6 +14,8 @@ import server from 'server';
 
 import { IconMailStroked, IconKeyStroked } from '@douyinfe/semi-icons';
 
+import { PetForm } from './PetForm';
+
 const GlobalModals = (props) => {
   const [state, dispatch] = useContext(Context);
 
@@ -75,7 +77,7 @@ const GlobalModals = (props) => {
   const onPetSubmit = (value) => {
     setPetLoading(true);
     server
-      .petAdd(value)
+      .petSave(value)
       .then((res) => {
         console.log(res);
         if (res.data?.success) {
@@ -107,18 +109,6 @@ const GlobalModals = (props) => {
     dispatch({ type: 'HIDE_PET' });
   };
 
-  const BREEDS = [
-    'Labrador Retriever',
-    'French Bulldog',
-    'German Shepherd',
-    'Golden Retriever',
-    'English Bulldog',
-    'Poodle',
-    'Beagle',
-    'Rottweiler',
-    'Other',
-  ];
-
   return (
     <>
       {props.children}
@@ -133,82 +123,7 @@ const GlobalModals = (props) => {
         maskClosable={false}
         footer={<div></div>}
       >
-        <Form onSubmit={onPetSubmit}>
-          <Form.Input
-            field='name'
-            label="Pet's name"
-            rules={[{ required: true, message: 'Required' }]}
-          />
-          <div className='d-flex'>
-            <Form.Select
-              field='age'
-              label='Age'
-              initValue={1}
-              fieldClassName='flex-1'
-              className='w-100'
-              disabled={petLoading}
-              rules={[{ required: true, message: 'Required' }]}
-            >
-              {[...Array(29)].map((x, i) => {
-                return (
-                  <Form.Select.Option value={i + 1} key={i + 1}>
-                    {i + 1}
-                  </Form.Select.Option>
-                );
-              })}
-            </Form.Select>
-            <Form.Select
-              field='breed'
-              label='Breed'
-              fieldClassName='flex-2'
-              className='w-100'
-              fieldStyle={{ marginLeft: '12px' }}
-              disabled={petLoading}
-              rules={[{ required: true, message: 'Required' }]}
-            >
-              {BREEDS.map((breed, i) => {
-                return (
-                  <Form.Select.Option value={breed} key={i}>
-                    {breed}
-                  </Form.Select.Option>
-                );
-              })}
-            </Form.Select>
-          </div>
-          <div className='d-flex'>
-            <Form.Select
-              field='sex'
-              label='Gender'
-              fieldClassName='flex-1'
-              className='w-100'
-              disabled={petLoading}
-              rules={[{ required: true, message: 'Required' }]}
-            >
-              <Form.Select.Option value={1}>Male</Form.Select.Option>
-              <Form.Select.Option value={2}>Female</Form.Select.Option>
-            </Form.Select>
-            <Form.InputNumber
-              fieldClassName='flex-2'
-              className='w-100'
-              fieldStyle={{ marginLeft: '12px' }}
-              innerButtons
-              field='weight'
-              label='Weight (lb)'
-              disabled={petLoading}
-              rules={[{ required: true, message: 'Required' }]}
-            />
-          </div>
-          <div className='text-center mt-4'>
-            <Button
-              size='large'
-              theme='solid'
-              htmlType='submit'
-              loading={petLoading}
-            >
-              Add
-            </Button>
-          </div>
-        </Form>
+        <PetForm onSubmit={onPetSubmit} loading={petLoading}></PetForm>
       </Modal>
 
       {/* Sign modal */}

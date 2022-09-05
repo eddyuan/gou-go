@@ -1,7 +1,4 @@
 import axios from 'axios';
-// const ax = axios.create({
-//   baseUrl: 'http://127.0.0.1:3000/api/v1/',
-// });
 
 const getHeaders = () => {
   const user_jwt = localStorage.getItem('user_jwt');
@@ -13,15 +10,35 @@ const getHeaders = () => {
 };
 
 const axGet = (url, params = {}) => {
-  return axios.get('http://127.0.0.1:3000/api/v1/' + url, {
-    params: params,
-    headers: getHeaders(),
+  return new Promise((resolve, reject) => {
+    axios
+      .get('http://127.0.0.1:3000/api/v1/' + url, {
+        params: params,
+        headers: getHeaders(),
+      })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 };
 
 const axPost = (url, params = {}) => {
-  return axios.post('http://127.0.0.1:3000/api/v1/' + url, params, {
-    headers: getHeaders(),
+  return new Promise((resolve, reject) => {
+    axios
+      .post('http://127.0.0.1:3000/api/v1/' + url, params, {
+        headers: getHeaders(),
+      })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 };
 
@@ -33,6 +50,7 @@ const server = {
     if (id) {
       return axGet('sitter', { id });
     } else {
+      // eslint-disable-next-line no-throw-literal
       throw 'id need to be provided';
     }
   },
@@ -89,13 +107,28 @@ const server = {
       }
     });
   },
+  userUpdate(params = {}) {
+    return axPost('user/update', {
+      profile_img_url: params.profile_img_url,
+      first_name: params.first_name,
+      last_name: params.last_name,
+      address: params.address,
+    });
+  },
   reviewSave(params = {}) {
-    return axPost('review/save', params);
+    return axPost('review/save', {
+      sitter_id: params.sitter_id,
+      rating: parseInt(params.rating),
+      body: params.body,
+    });
   },
   reviewDelete(id) {
     return axPost('review/delete', { id });
   },
-  petAdd(params = {}) {
+  getPet(id) {
+    return axGet('pet', { id });
+  },
+  petSave(params = {}) {
     return axPost('pet/save', params);
   },
   petDelete(id) {
@@ -109,7 +142,9 @@ const server = {
       pets: params.pets,
     });
   },
-
+  getBooking(id) {
+    return axGet('booking', { id });
+  },
   getBookings() {
     return axGet('bookings');
   },

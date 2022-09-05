@@ -8,13 +8,14 @@ import { LocaleProvider, Layout } from '@douyinfe/semi-ui';
 import { Store } from 'Store';
 
 import GougoNavbar from 'components/Navbars/GougoNavbar';
-import GougoFooter from 'components/Footers/GougoFooter';
 
 import GlobalModals from 'views/modules/GlobalModals';
 // Pages
 import HomePage from 'views/HomePage';
 import SitterPage from 'views/SitterPage';
 import ProfilePage from 'views/ProfilePage';
+import BookingPage from 'views/BookingPage';
+import { PetPage } from 'views/PetPage';
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -40,10 +41,8 @@ export const App = () => {
                   <Route path='/' exact element={<HomePage />} />
                   <Route path='/sitter/:id' element={<SitterPage />} />
                   <Route path='/profile' element={<ProfilePage />} />
-                  {/* <Route path='/landing-page' exact element={<Landing />} />
-                <Route path='/signin' exact element={<LoginPage />} />
-                <Route path='/profile-page' exact element={<Profile />} />
-                <Route path='/register-page' exact element={<Register />} /> */}
+                  <Route path='/booking/:id' element={<BookingPage />} />
+                  <Route path='/pet/:id' element={<PetPage />} />
                 </Routes>
               </Wrapper>
             </Content>

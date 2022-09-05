@@ -25,7 +25,7 @@ class Api::V1::PetsController < ApplicationController
     @pet.user = @current_user
 
     if @pet.save
-      render json: Resp.success(@pet)
+      render json: Resp.success(@pet.json_with_bookings)
     else
       render json: Resp.error(@pet.errors.full_messages),
              status: :unprocessable_entity
@@ -34,7 +34,7 @@ class Api::V1::PetsController < ApplicationController
 
   def update
     if @pet.update(pet_params)
-      render json: Resp.success(@pet)
+      render json: Resp.success(@pet.json_with_bookings)
     else
       render json: Resp.error(@pet.errors.full_messages),
              status: :unprocessable_entity

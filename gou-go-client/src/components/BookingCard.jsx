@@ -1,13 +1,11 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Context } from 'Store';
+import React, { useState } from 'react';
 import { Button, Card, Tag, Modal, Toast } from '@douyinfe/semi-ui';
-import { IconDeleteStroked, IconMale, IconFemale } from '@douyinfe/semi-icons';
-import { useNavigate, Link } from 'react-router-dom';
+import { IconDeleteStroked } from '@douyinfe/semi-icons';
+import { useNavigate } from 'react-router-dom';
 import server from 'server';
 import moment from 'moment';
 
 export const BookingCard = (props) => {
-  const [state, dispatch] = useContext(Context);
   const [loading, setLoading] = useState(false);
   const [deleteV, setDeleteV] = useState(false);
   const navigate = useNavigate();
@@ -45,7 +43,7 @@ export const BookingCard = (props) => {
 
   const toDetail = () => {
     if (!loading) {
-      navigate(`/booking/${booking.id}`);
+      navigate(`/booking/${booking.id}`, { state: { booking: booking } });
     }
   };
   return (
@@ -73,7 +71,7 @@ export const BookingCard = (props) => {
                 {booking?.sitter?.first_name}
               </div>
               <div className='d-flex f-wrap aic mt-3'>
-                {booking.pets.map((pet) => (
+                {booking.pets?.map((pet) => (
                   <Tag className='mr-2' key={pet.id}>
                     {pet.name}
                   </Tag>
@@ -97,15 +95,15 @@ export const BookingCard = (props) => {
       </div>
       <Modal
         className='glass'
-        title='Delete pet'
+        title='Cancel booking'
         visible={deleteV}
         onOk={doDelete}
         onCancel={() => setDeleteV(false)}
         closeOnEsc={true}
-        okText='Delete'
+        okText='Yes'
       >
         <div>
-          Do you want to delete this booking on <strong>{bookingTime}</strong> ?
+          Do you want to cancel this booking on <strong>{bookingTime}</strong> ?
         </div>
       </Modal>
     </>

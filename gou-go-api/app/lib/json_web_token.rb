@@ -14,13 +14,6 @@ class JsonWebToken
   def self.userJson(user)
     token = JsonWebToken.encode(user_id: user.id)
     time = Time.now + 24.hours.to_i
-    bookings = user.bookings.map { |booking| booking.json }
-    {
-      token: token,
-      exp: time.strftime("%m-%d-%Y %H:%M"),
-      **user.json,
-      bookings: bookings,
-      pets: user.pets
-    }
+    { token: token, exp: time.strftime("%m-%d-%Y %H:%M"), **user.json }
   end
 end
