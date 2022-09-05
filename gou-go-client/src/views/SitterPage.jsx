@@ -94,7 +94,7 @@ const SitterPage = (props) => {
   const onReviewCreated = (review) => {
     setSitter({
       ...sitter,
-      reviews: [review, ...sitter.reviews],
+      reviews: [...sitter.reviews, review],
     });
   };
 
@@ -170,7 +170,7 @@ const SitterPage = (props) => {
                   <span className='ms-3 mb-1'>{sitter.rating?.toFixed(1)}</span>
                 </div>
                 <div className='mt-3 mb-4'>
-                  <small className='bg-lighter rounded px-2 py-1'>
+                  <small className='bg-lighter rounded px-3 py-2 dib'>
                     {sitter.description}
                   </small>
                 </div>
