@@ -7,6 +7,11 @@ class Booking < ApplicationRecord
   has_many :pets, through: :pet_bookings
 
   def json
-    { **self.attributes, pets: self.pets, sitter: self.sitter }
+    {
+      **self.attributes,
+      pets: self.pets.to_set,
+      sitter: self.sitter,
+      price: (self.sitter.price * self.duration * self.pets.count / 60).round()
+    }
   end
 end

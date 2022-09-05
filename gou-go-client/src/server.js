@@ -12,22 +12,29 @@ const getHeaders = () => {
   return headers;
 };
 
-const axGet = (url, params) => {
+const axGet = (url, params = {}) => {
   return axios.get('http://127.0.0.1:3000/api/v1/' + url, {
     params: params,
     headers: getHeaders(),
   });
 };
 
-const axPost = (url, params) => {
+const axPost = (url, params = {}) => {
   return axios.post('http://127.0.0.1:3000/api/v1/' + url, params, {
     headers: getHeaders(),
   });
 };
 
 const server = {
-  getSitters() {
-    return axGet('sitters');
+  getSitters(params = {}) {
+    return axGet('sitters', params);
+  },
+  getSitter(id) {
+    if (id) {
+      return axGet('sitter', { id });
+    } else {
+      throw 'id need to be provided';
+    }
   },
   register({ email, password, last_name, first_name, save } = {}) {
     return new Promise((resolve, reject) => {
@@ -81,6 +88,33 @@ const server = {
         reject('No credential provided');
       }
     });
+  },
+  reviewSave(params = {}) {
+    return axPost('review/save', params);
+  },
+  reviewDelete(id) {
+    return axPost('review/delete', { id });
+  },
+  petAdd(params = {}) {
+    return axPost('pet/save', params);
+  },
+  petDelete(id) {
+    return axPost('pet/delete', { id });
+  },
+  bookSave(params = {}) {
+    return axPost('booking/save', {
+      time: params.time,
+      duration: params.duration,
+      sitter_id: params.sitter_id,
+      pets: params.pets,
+    });
+  },
+
+  getBookings() {
+    return axGet('bookings');
+  },
+  bookingDelete(id) {
+    return axPost('booking/delete', { id });
   },
 };
 

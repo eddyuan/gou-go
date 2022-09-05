@@ -5,11 +5,11 @@ class Api::V1::ReviewsController < ApplicationController
   before_action :find_reviews, only: :index
 
   def index
-    render json: Resp.success(@reviews)
+    render json: Resp.success(@reviews.map { |review| review.json })
   end
 
   def show
-    render json: Resp.success(@review)
+    render json: Resp.success(@review.json)
   end
 
   def create
@@ -17,7 +17,7 @@ class Api::V1::ReviewsController < ApplicationController
     @review.sitter = @sitter
     @review.user = @current_user
     if @review.save
-      render json: Resp.success(@review), status: :created
+      render json: Resp.success(@review.json), status: :created
     else
       render json: Resp.error(@review.errors.full_messages),
              status: :unprocessable_entity

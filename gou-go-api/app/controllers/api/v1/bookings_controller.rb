@@ -18,7 +18,8 @@ class Api::V1::BookingsController < ApplicationController
              status: :unprocessable_entity
       return
     end
-    pets = Pet.where(id: JSON.parse(params[:pets]))
+    p params[:pets]
+    pets = Pet.where(id: params[:pets])
     if pets.count <= 0
       render json: Resp.error("Can not find the pets"),
              status: :unprocessable_entity
@@ -36,6 +37,8 @@ class Api::V1::BookingsController < ApplicationController
       render json: Resp.error(@booking.errors.full_messages),
              status: :unprocessable_entity
     end
+    # p params[:pets]
+    # p JSON.parse(params[:pets]).join(", ")
   end
 
   def destroy
@@ -78,9 +81,9 @@ class Api::V1::BookingsController < ApplicationController
 
   def find_bookings
     if (@current_user.is_sitter)
-      @bookings = @current_user.sitter.bookings
+      @bookings = @current_user.sitter.bookings.to_set
     else
-      @bookings = @current_user.bookings
+      @bookings = @current_user.bookings.to_set
     end
   end
 

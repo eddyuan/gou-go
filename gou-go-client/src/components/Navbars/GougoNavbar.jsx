@@ -1,22 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Context } from 'Store';
-import { Link } from 'react-router-dom';
 
 import { IconUserCircleStroked, IconServerStroked } from '@douyinfe/semi-icons';
-import { Nav, Button, Dropdown, Toast, Modal, Form } from '@douyinfe/semi-ui';
-
-import SignInModule from 'views/modules/SignInModule';
+import { Nav, Button, Dropdown, Toast } from '@douyinfe/semi-ui';
 
 const GougoNavbar = (props) => {
-  const navigate = useNavigate();
-  useEffect(() => {}, []);
+  // const navigate = useNavigate();
+  // useEffect(() => {}, []);
 
   const [state, dispatch] = useContext(Context);
-
-  const [loginV, setLoginV] = useState(false);
-
-  const [loginMode, setLoginMode] = useState(1);
 
   const onSignOut = () => {
     dispatch({ type: 'SIGNOUT', payload: {} });
@@ -24,23 +17,7 @@ const GougoNavbar = (props) => {
       content: 'Signed out',
       duration: 5,
     });
-    navigate('/');
-  };
-
-  const onSignedIn = (mode) => {
-    setLoginV(false);
-    Toast.success({
-      content:
-        mode === 1 ? 'Signed in successfully' : 'Registered successfully',
-      duration: 5,
-    });
-  };
-
-  const toggleLoginV = (mode) => {
-    if (mode === 1 || mode === 2) {
-      setLoginMode(mode);
-    }
-    setLoginV(!loginV);
+    // navigate('/');
   };
 
   return (
@@ -65,7 +42,7 @@ const GougoNavbar = (props) => {
                   position={'bottomLeft'}
                   render={
                     <Dropdown.Menu>
-                      <Link to={`/`}>
+                      <Link to={`/profile`}>
                         <Dropdown.Item>Profile</Dropdown.Item>
                       </Link>
                       <Dropdown.Item icon={<IconServerStroked />}>
@@ -98,7 +75,9 @@ const GougoNavbar = (props) => {
                   theme='borderless'
                   style={{ color: 'var(--semi-color-text-2)' }}
                   size='large'
-                  onClick={() => toggleLoginV(1)}
+                  onClick={() => {
+                    dispatch({ type: 'SHOW_SIGNIN' });
+                  }}
                 >
                   Sign In
                 </Button>
@@ -106,27 +85,18 @@ const GougoNavbar = (props) => {
                   className='ml-2'
                   size='large'
                   theme='solid'
-                  onClick={() => toggleLoginV(2)}
+                  onClick={() => {
+                    dispatch({ type: 'SHOW_SIGNUP' });
+                  }}
                 >
                   Sign up
                 </Button>
-                <Modal
-                  className='glass'
-                  title=''
-                  visible={loginV}
-                  centered
-                  onCancel={toggleLoginV}
-                  maskClosable={false}
-                  footer={<div className='pt-8'></div>}
-                >
-                  <SignInModule mode={loginMode} onSuccess={onSignedIn} />
-                </Modal>
               </>
             )}
           </Nav.Footer>
         </Nav>
       </div>
-      <div className='nav-spacer'></div>
+      {/* <div className='nav-spacer'></div> */}
     </>
   );
 };

@@ -4,7 +4,22 @@ class Api::V1::SittersController < ApplicationController
   before_action :find_sitter, only: %i[show]
 
   def index
+    price_min = params[:price_min].to_i
+    price_max = params[:price_max].to_i
+    weight = params[:weight].to_f
+    walks_per_day = params[:per_day].to_i
+
     @sitters = Sitter.all
+
+    @sitters =
+      @sitters.where("price BETWEEN ? AND ?", price_min, price_max) if (
+      price_max > price_min && price_max > 0
+    )
+    @sitters = @sitters.where("dog_weight >= ?", weight) if (weight > 0.0)
+    @sitters = @sitters.where("walks_per_day >= ?", walks_per_day) if (
+      walks_per_day > 0
+    )
+
     render json:
              Resp.success(@sitters.map { |sitter| sitter.json_with_reviews })
   end

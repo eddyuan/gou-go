@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
       get "/reviews", to: "reviews#index"
       get "/review", to: "reviews#show"
-      post "/review/save", to: "reviews#edit"
+      post "/review/save", to: "reviews#create"
       post "/review/delete", to: "reviews#destroy"
 
       get "/*a", to: "application#not_found"
