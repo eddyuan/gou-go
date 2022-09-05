@@ -446,9 +446,21 @@ main.padded {
     background-color: rgb(242, 244, 245);
 }
 
+.bg-lighter {
+    background-color: $gray-200;
+}
+
+.rounded {
+    border-radius: 8px;
+}
+
 .semi-form .semi-radioGroup.semi-radioGroup-wrapper {
     padding-top: 0;
     padding-bottom: 0;
+}
+
+.semi-button {
+    border-radius: 12px;
 }
 
 .semi-radioGroup.full-radio {

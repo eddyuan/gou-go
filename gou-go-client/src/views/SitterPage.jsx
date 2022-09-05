@@ -170,22 +170,37 @@ const SitterPage = (props) => {
                   <span className='ms-3 mb-1'>{sitter.rating?.toFixed(1)}</span>
                 </div>
                 <div className='mt-3 mb-4'>
-                  <span className='bg-lighter rounded p-2'>
+                  <small className='bg-lighter rounded px-2 py-1'>
                     {sitter.description}
-                  </span>
+                  </small>
                 </div>
-                <h5>Dog Size</h5>
-                <div>
-                  <IconPrizeStroked /> Up to: {sitter.dog_weight.toFixed(1)}lb
+                <div className='d-flex f-wrap'>
+                  <div className='mr-8'>
+                    <h5>Dog Size</h5>
+                    <div className='d-flex aic mt-1'>
+                      <IconPrizeStroked className='mt-1' />
+                      <span className='ml-1'>{`Up to: ${sitter.dog_weight.toFixed(
+                        1
+                      )} lb`}</span>
+                    </div>
+                  </div>
+                  <div className='mr-4'>
+                    <h5>Walks per day</h5>
+                    <div className='d-flex aic mt-1'>
+                      <IconPrizeStroked className='mt-1' />
+                      <span className='ml-1'>{`Up to: ${sitter.walks_per_day}`}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className='mt-4'>
+
+                <div className='mt-6 mb-8'>
                   {state.user?.id ? (
                     <Button
                       size='large'
                       theme='solid'
                       onClick={toggleBookVisible}
                     >
-                      Book now
+                      Book Now
                     </Button>
                   ) : (
                     <Button
