@@ -17,6 +17,7 @@ const axGet = (url, params = {}) => {
         headers: getHeaders(),
       })
       .then((res) => {
+        console.log(res);
         resolve(res);
       })
       .catch((e) => {
@@ -33,6 +34,7 @@ const axPost = (url, params = {}) => {
         headers: getHeaders(),
       })
       .then((res) => {
+        console.log(res);
         resolve(res);
       })
       .catch((e) => {
@@ -78,12 +80,7 @@ const server = {
       if (email && password) {
         axPost('login', { email, password })
           .then((res) => {
-            if (
-              save !== false &&
-              res.data &&
-              res.data.success &&
-              res.data.data.token
-            ) {
+            if (res.data && res.data.success && res.data.data.token) {
               localStorage.setItem('user_jwt', res.data.data.token);
             }
             resolve(res);

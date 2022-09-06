@@ -144,7 +144,7 @@ end
         description: Faker::Hipster.sentence,
         postcode: Faker::Address.postcode,
         walks_per_day: rand(1..5),
-        dog_weight: rand(1.0..20.0).round(2).to_f,
+        dog_weight: rand(1.0..100.0).round(2).to_f,
         user_id: user.id
       )
   else

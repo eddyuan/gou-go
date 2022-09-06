@@ -54,6 +54,9 @@ const SitterPage = (props) => {
   };
   // const setDisableDate = () => {
   const disabledDate = (date) => {
+    if (dateFns.isToday(date) && moment().get('hour') >= 20) {
+      return true;
+    }
     return moment(date).endOf('D').isBefore(moment());
   };
   const disabledTime = (date) => {

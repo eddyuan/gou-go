@@ -46,7 +46,6 @@ export const App = () => {
                 </Routes>
               </Wrapper>
             </Content>
-            <Footer>{/* <GougoFooter /> */}</Footer>
           </BrowserRouter>
         </GlobalModals>
       </LocaleProvider>
